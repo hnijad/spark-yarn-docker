@@ -1,0 +1,42 @@
+version: "2.4"
+services:
+  node-master:
+    tty: true
+    hostname: spark-master
+    image: spark-base:1.0
+    container_name: node-master
+    ports:
+      - "9870:9870"
+      - "8088:8088"
+      - "18080:18080"
+    networks:
+      spark-nerwork:
+        ipv4_address: 172.16.1.3
+
+  node-1:
+    tty: true
+    hostname: node-1
+    image: hadoop-base-image:1.0
+    container_name: node-1
+    networks:
+      spark-nerwork:
+        ipv4_address: 172.16.1.4
+
+  node-2:
+    tty: true
+    hostname: node-2
+    image: hadoop-base-image:1.0
+    container_name: node-2
+    networks:
+      spark-nerwork:
+        ipv4_address: 172.16.1.5
+
+networks:
+  spark-nerwork:
+    name: spark-network
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.1.0/24
+          gateway: 172.16.1.1
